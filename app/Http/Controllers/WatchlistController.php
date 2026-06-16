@@ -34,7 +34,7 @@ class WatchlistController extends Controller
         $imdb_id = $request->validated('imdb_id');
 
         $movie = Movie::where('external_id', $imdb_id)->first();
-        dd($movie);
+
         if (!$movie) {
             $movieData = $this->movieService->getMovieDetails($imdb_id);
             
