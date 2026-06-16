@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('external_id')->unique();
             $table->string('title');
             $table->string('description')->nullable();
-            $table->string('poster_url_path')->nullable();
+            $table->string('poster_url')->nullable();
             $table->string('release_year', 4)->nullable();
             $table->timestamps();
         });

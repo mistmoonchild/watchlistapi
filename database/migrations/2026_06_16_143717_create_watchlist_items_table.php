@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('movie_id')->constrained()->onDelete('cascade'); 
-            $table->enum('status', ['watched', 'to_watch'])->default('to_watch'); 
+            $table->enum('status', ['to_watch', 'watching', 'watched'])->default('to_watch');
             $table->tinyInteger('rating')->nullable();
-            $table->text('review')->nullable();
+            $table->text('personal_notes')->nullable();
             $table->unique(['user_id', 'movie_id']);
             $table->timestamps();
         });
