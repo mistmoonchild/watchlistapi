@@ -1,0 +1,7 @@
+$kind: http-request
+method: POST
+url: '{{baseUrl}}/api/logout'
+order: 3000
+headers:
+  - key: 'Accept'
+    value: 'application/json'

@@ -1,0 +1,7 @@
+$kind: http-request
+method: DELETE
+url: '{{baseUrl}}/api/watchlist/{{watchlistId}}'
+order: 9000
+headers:
+  - key: 'Accept'
+    value: 'application/json'

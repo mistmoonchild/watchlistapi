@@ -1,0 +1,17 @@
+$kind: http-request
+method: PUT
+url: '{{baseUrl}}/api/watchlist/{{watchlistId}}'
+order: 8000
+headers:
+  - key: 'Content-Type'
+    value: 'application/json'
+  - key: 'Accept'
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "status": "watched",
+      "rating": 4,
+      "personal_notes": "Finished it yesterday"
+    }

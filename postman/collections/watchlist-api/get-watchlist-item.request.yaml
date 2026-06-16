@@ -1,0 +1,7 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/api/watchlist/{{watchlistId}}'
+order: 7000
+headers:
+  - key: 'Accept'
+    value: 'application/json'

@@ -1,0 +1,18 @@
+$kind: http-request
+method: POST
+url: '{{baseUrl}}/api/watchlist'
+order: 6000
+headers:
+  - key: 'Content-Type'
+    value: 'application/json'
+  - key: 'Accept'
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "omdb_id": "tt0133093",
+      "status": "to_watch",
+      "rating": 5,
+      "personal_notes": "Classic movie to revisit"
+    }
