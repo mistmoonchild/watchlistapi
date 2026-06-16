@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class WatchListItem extends Model
 {
     protected $table = 'watchlist_items';
-    protected $fillable = ['user_id', 'movie_id', 'status', 'rating', 'description'];
+    protected $fillable = ['user_id', 'movie_id', 'status', 'rating', 'personal_notes'];
 
     public function movie()
     {

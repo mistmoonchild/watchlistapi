@@ -13,7 +13,7 @@ class Movie extends Model
         'external_id',
         'title',
         'description',
-        'poster_url_path',
+        'poster_url',
         'release_year',
     ];
 }

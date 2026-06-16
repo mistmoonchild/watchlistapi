@@ -24,7 +24,7 @@ class StoreWatchlistItemRequest extends FormRequest
     {
         return [
             'omdb_id' => 'required|string',
-            'status' => 'nullable|in:to_watch,watched',
+            'status' => 'nullable|in:to_watch,watching,watched',
             'rating' => 'nullable|integer|min:1|max:5',
             'personal_notes' => 'nullable|string|max:1000'
         ];

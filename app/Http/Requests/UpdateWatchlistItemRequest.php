@@ -12,7 +12,7 @@ class UpdateWatchlistItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class UpdateWatchlistItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'sometimes|in:to_watch,watched',
+            'status' => 'sometimes|in:to_watch,watching,watched',
             'rating' => 'nullable|integer|min:1|max:5',
             'personal_notes' => 'nullable|string|max:1000'
         ];
