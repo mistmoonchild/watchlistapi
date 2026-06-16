@@ -85,6 +85,7 @@ class WatchlistController extends Controller
 
     public function destroy(WatchlistItem $watchlist): JsonResponse
     {
+        dd($watchlist);
         if ($watchlist->user_id !== request()->user()->id) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
