@@ -123,4 +123,20 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Other services configuration for this application.
+    |--------------------------------------------------------------------------
+    |
+    |
+    |
+    */
+
+    'services' => [
+        'omdb' => [
+            'base_url' => env('OMDB_BASE_URL', 'http://www.omdbapi.com/'),
+            'api_key' => env('OMDB_API_KEY'),
+        ],
+    ],
+
 ];
