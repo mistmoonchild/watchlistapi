@@ -31,12 +31,12 @@ class WatchlistController extends Controller
 
     public function store(StoreWatchlistItemRequest $request): JsonResponse|WatchlistItemResource
     {
-        $imdb_id = $request->validated('imdb_id');
+        $omdb_id = $request->validated('omdb_id');
 
-        $movie = Movie::where('external_id', $imdb_id)->first();
+        $movie = Movie::where('external_id', $omdb_id)->first();
 
         if (!$movie) {
-            $movieData = $this->movieService->getMovieDetails($imdb_id);
+            $movieData = $this->movieService->getMovieDetails($omdb_id);
             
             if (!$movieData) {
                 return response()->json(['message' => 'Movie not found on OMDb.'], 404);
