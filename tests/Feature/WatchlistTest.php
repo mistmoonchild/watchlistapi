@@ -27,7 +27,7 @@ class WatchlistTest extends TestCase
         ]);
 
         $response = $this->actingAs($user, 'sanctum')->postJson('/api/watchlist', [
-            'omdb_id' => 'tt1234567',
+            'imdb_id' => 'tt1234567',
             'status' => 'to_watch',
             'rating' => 5,
             'personal_notes' => 'Must watch this weekend!'
