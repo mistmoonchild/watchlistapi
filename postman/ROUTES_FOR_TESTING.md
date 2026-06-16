@@ -7,7 +7,7 @@ Auth:
 - All `watchlist` routes and `POST /logout` require `Authorization: Bearer {{accessToken}}`.
 
 Recommended Postman variables:
-- `baseUrl` → local app URL, for example `http://watchlistapi.test`
+- `baseUrl` → local app URL, for example `https://watchlistapi.test`
 - `accessToken` → bearer token returned by login/register
 - `watchlistId` → ID from create/list response
 
