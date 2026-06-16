@@ -42,7 +42,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "imdb_id": "tt0133093",
+  "omdb_id": "tt0133093",
   "status": "to_watch",
   "rating": 5,
   "personal_notes": "Klasik, moram pogledati ponovo!"
@@ -78,7 +78,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "status": "watched",
+  "status": "watching",
   "rating": 4,
   "personal_notes": "Dobar film, ali kraj je malo konfuzan."
 }
