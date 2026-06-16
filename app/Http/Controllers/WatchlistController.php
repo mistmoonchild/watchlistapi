@@ -2,47 +2,94 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
+use App\Models\WatchlistItem;
+use App\Services\MovieDatabaseService;
+use App\Http\Requests\StoreWatchlistItemRequest;
+use App\Http\Requests\UpdateWatchlistItemRequest;
+use App\Http\Resources\WatchlistItemResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class WatchlistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(private MovieDatabaseService $movieService) {}
+
+    public function index(Request $request): AnonymousResourceCollection
     {
-        //
+        $query = $request->user()->watchlistItems()->with('movie');
+
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $items = $query->paginate(10);
+
+        return WatchlistItemResource::collection($items);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreWatchlistItemRequest $request): JsonResponse|WatchlistItemResource
     {
-        //
+        $omdbid = $request->validated('omdb_id');
+
+        $movie = Movie::where('external_id', $omdbid)->first();
+        if (!$movie) {
+            $movieData = $this->movieService->getMovieDetails($omdbid);
+            
+            if (!$movieData) {
+                return response()->json(['message' => 'Movie not found on OMDb.'], 404);
+            }
+            
+            $movie = Movie::create($movieData);
+        }
+
+        $exists = $request->user()->watchlistItems()->where('movie_id', $movie->id)->exists();
+        if ($exists) {
+            return response()->json(['message' => 'Movie is already in your watchlist.'], 409);
+        }
+
+        $watchlistItem = $request->user()->watchlistItems()->create([
+            'movie_id' => $movie->id,
+            'status' => $request->validated('status', 'to_watch'),
+            'rating' => $request->validated('rating'),
+            'personal_notes' => $request->validated('personal_notes'),
+        ]);
+
+        $watchlistItem->load('movie');
+
+        return new WatchlistItemResource($watchlistItem);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(WatchlistItem $watchlist): JsonResponse|WatchlistItemResource
     {
-        //
+        if ($watchlist->user_id !== request()->user()->id) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $watchlist->load('movie');
+        return new WatchlistItemResource($watchlist);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateWatchlistItemRequest $request, WatchlistItem $watchlist): JsonResponse|WatchlistItemResource
     {
-        //
+        if ($watchlist->user_id !== $request->user()->id) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $watchlist->update($request->validated());
+
+        return new WatchlistItemResource($watchlist);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(WatchlistItem $watchlist): JsonResponse
     {
-        //
+        if ($watchlist->user_id !== request()->user()->id) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $watchlist->delete();
+
+        return response()->json(null, 204); 
     }
 }
