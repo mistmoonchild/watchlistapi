@@ -1,0 +1,91 @@
+### Promenljive okruženja (Environment Variables)
+@baseUrl = https://watchlistapi.test/api
+@token = 
+
+### ----------------------------------------------------
+### 1. AUTENTIFIKACIJA
+### ----------------------------------------------------
+
+### Registracija novog korisnika
+POST {{baseUrl}}/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Test Korisnik",
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### Prijava (Login) - Kopiraj 'access_token' iz odgovora u @token promenljivu gore
+POST {{baseUrl}}/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+
+###
+
+### ----------------------------------------------------
+### 2. WATCHLISTA (Zaštićene rute)
+### ----------------------------------------------------
+
+### Dodavanje novog filma u listu (The Matrix)
+POST {{baseUrl}}/watchlist
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "imdb_id": "tt0133093",
+  "status": "to_watch",
+  "rating": 5,
+  "personal_notes": "Klasik, moram pogledati ponovo!"
+}
+
+###
+
+### Prikaz cele liste filmova (sa paginacijom)
+GET {{baseUrl}}/watchlist
+Authorization: Bearer {{token}}
+Accept: application/json
+
+###
+
+### Prikaz liste, ali filtrirano samo za one koje tek treba da gledamo
+GET {{baseUrl}}/watchlist?status=to_watch
+Authorization: Bearer {{token}}
+Accept: application/json
+
+###
+
+### Prikaz samo jednog filma (ID = 1 u bazi)
+GET {{baseUrl}}/watchlist/1
+Authorization: Bearer {{token}}
+Accept: application/json
+
+###
+
+### Ažuriranje statusa i ocene filma
+PUT {{baseUrl}}/watchlist/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "status": "watched",
+  "rating": 4,
+  "personal_notes": "Dobar film, ali kraj je malo konfuzan."
+}
+
+###
+
+### Brisanje filma iz liste
+DELETE {{baseUrl}}/watchlist/1
+Authorization: Bearer {{token}}
+Accept: application/json
