@@ -146,6 +146,8 @@ All endpoints are prefixed with `/api`. Protected routes require an
 |--------|-------------------------------|---------------------------------------------------|
 | GET    | `/watchlist`                  | List the current user's watchlist (paginated, 10/page) |
 | GET    | `/watchlist?status=to_watch`  | List filtered by status (`to_watch`, `watching`, or `watched`) |
+| GET    | `/watchlist?title=`           | List filtered by title                            |
+| GET    | `/watchlist?release_year=`    | List filtered by release_year                     |
 | POST   | `/watchlist`                  | Add a movie to the watchlist                      |
 | GET    | `/watchlist/{id}`             | Show a single watchlist item                      |
 | PUT    | `/watchlist/{id}`             | Update status, rating, or notes                   |
@@ -227,7 +229,7 @@ The flow: `register`/`login` return a plain-text token, the client sends it as `
 **Assumptions made**
 
 - The identifier sent by the client is an **IMDb ID** (e.g. `tt0133093`), matching OMDb's `i=` lookup.
-- A rating is an integer **1–5**; notes are capped at 1000 characters.
+- A rating is an integer **1–5**;
 - A movie that OMDb doesn't recognize is a **client error surfaced as `404`**, not a silently-stored empty record.
 
 ## Testing
