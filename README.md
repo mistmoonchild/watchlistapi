@@ -202,9 +202,7 @@ This API uses **Laravel Sanctum** with bearer tokens.
 
 **Why Sanctum over the alternatives:**
 
-- **vs. session/cookie auth** — This is a stateless API with no first-party browser frontend, so server-side sessions and CSRF cookies add friction without benefit. Token auth fits API and mobile clients naturally.
-- **vs. Passport (OAuth2)** — Passport is a full OAuth2 server. We don't need third-party authorization flows, scopes, or client-credential grants here; that's a lot of moving parts for a single first-party client. Sanctum gives us exactly what's needed (issue a token on login, send it as a `Bearer`, revoke on logout) with far less surface area.
-- **vs. stateless JWT** — JWTs can't be revoked before expiry without extra infrastructure. Sanctum's tokens are database-backed, so `logout` genuinely invalidates the token immediately. For a small app, the DB lookup cost is negligible and the revocation guarantee is worth it.
+- **vs. other auth** — Sanctum is out-of-the-box Laravel easy to setup api authentification with with plain Bearer token
 
 The flow: `register`/`login` return a plain-text token, the client sends it as `Authorization: Bearer <token>`, and `logout` deletes the current token. All watchlist routes sit behind the `auth:sanctum` middleware and are scoped to `$request->user()`.
 
