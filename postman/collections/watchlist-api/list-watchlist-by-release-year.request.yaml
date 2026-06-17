@@ -1,0 +1,10 @@
+$kind: http-request
+method: GET
+url: '{{baseUrl}}/api/watchlist'
+order: 5000
+headers:
+  - key: 'Accept'
+    value: 'application/json'
+queryParams:
+  - key: 'release_year'
+    value: '1999'
