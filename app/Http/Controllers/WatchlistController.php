@@ -24,6 +24,24 @@ class WatchlistController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->has('title')) {
+            $query->whereHas('movie', function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->title . '%');
+            });
+        }
+
+        if ($request->has('description')) {
+            $query->whereHas('movie', function ($q) use ($request) {
+                $q->where('description', 'like', '%' . $request->description . '%');
+            });
+        }
+
+        if( $request->has('release_year')) {
+            $query->whereHas('movie', function ($q) use ($request) {
+                $q->where('release_year', $request->release_year);
+            });
+        }
+
         $items = $query->paginate(10);
 
         return WatchlistItemResource::collection($items);
