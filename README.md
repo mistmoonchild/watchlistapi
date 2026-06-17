@@ -244,8 +244,8 @@ The suite uses `Http::fake()` to stub OMDb, so tests run without network access 
 - I did this project as fast as I could with quality in mind
 - I first tested with sqlite then switched to postgreSql
 - For naming commits I used AI integrated naming generator in VSCode
-- ** I DIDN'T IN ANY WAY, EXCEPT GENERATING NAMES FOR COMMITS, USED ANY AI HELPER **
-- Anyway I am very comortable with using Claude Code, Codex or any other AI 
+- **I DIDN'T IN ANY WAY, EXCEPT GENERATING NAMES FOR COMMITS, AI HELPER IN POSTMAN AND HELP WITH WRITING README.md, USED ANY AI FOR CODE GENERATION BUT ONLY FOR THE PURPOSE OF THIS TEST**
+- Anyway, I am very comortable with using Claude Code, Codex or any other AI 
 
 ## License
 
