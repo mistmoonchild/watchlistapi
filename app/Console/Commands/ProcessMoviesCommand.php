@@ -1,15 +1,19 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Console\Commands;
 
-use Illuminate\Database\Seeder;
 use App\Jobs\ProcessMovies;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
-class PopularMoviesSeeder extends Seeder
+class ProcessMoviesCommand extends Command
 {
-    public function run(): void
+    protected $signature = 'movies:process {--limit=10000 : Number of movies to fetch}';
+    protected $description = 'Fetch movies from OMDb API and process them';
+
+    public function handle(): void
     {
+        $limit = $this->option('limit');
         $imdbIds = [];
 
         $searches = [
@@ -17,24 +21,21 @@ class PopularMoviesSeeder extends Seeder
             'adventure', 'romance', 'sci-fi', 'fantasy', 'mystery',
             'crime', 'animation', 'documentary', 'war', 'western',
             'superhero', 'marvel', 'dc', 'star', 'the',
-            'love', 'dark', 'dark knight', 'matrix', 'avengers',
-            'harry', 'lord', 'game', 'mission', 'fast',
-            'john', 'james', 'jason', 'jack', 'david',
-            'spider', 'iron', 'captain', 'thor', 'hulk',
-            'batman', 'superman', 'wonder', 'aquaman', 'flash',
-            'new', 'best', 'top', 'great', 'amazing',
-            'amazing', 'fantastic', 'incredible', 'ultimate', 'final',
-            'death', 'life', 'time', 'world', 'end',
-            'beginning', 'rise', 'fall', 'war', 'peace',
-            'love', 'hate', 'good', 'evil', 'light',
-            'dark', 'night', 'day', 'forever', 'always',
+            'love', 'dark', 'matrix', 'avengers', 'harry',
+            'lord', 'game', 'mission', 'fast', 'spider',
+            'iron', 'captain', 'thor', 'batman', 'superman',
+            'wonder', 'aquaman', 'flash', 'new', 'best',
         ];
 
-        $baseUrl = config('app.services.omdb.base_url', 'http://www.omdbapi.com/');
         $apiKey = config('app.services.omdb.api_key');
+        $baseUrl = config('app.services.omdb.base_url', 'http://www.omdbapi.com/');
+
+        $this->info("Fetching up to $limit movies...");
 
         foreach ($searches as $search) {
             for ($page = 1; $page <= 20; $page++) {
+                $this->info("Searching: $search (page $page)");
+
                 $response = Http::get($baseUrl, [
                     'apikey' => $apiKey,
                     's' => $search,
@@ -56,19 +57,20 @@ class PopularMoviesSeeder extends Seeder
                     $imdbIds[] = $movie['imdbID'];
                 }
 
-                if (count($imdbIds) >= 10000) {
+                if (count($imdbIds) >= $limit) {
                     break 2;
                 }
             }
         }
 
-        $imdbIds = array_slice(array_unique($imdbIds), 0, 10000);
+        $imdbIds = array_slice(array_unique($imdbIds), 0, $limit);
+
+        $this->info('Found ' . count($imdbIds) . ' unique movies');
 
         foreach (array_chunk($imdbIds, 100) as $batch) {
             dispatch(new ProcessMovies($batch));
         }
 
-        $this->command->info('Queued ' . count($imdbIds) . ' movies for processing');
+        $this->info('✓ Queued ' . count($imdbIds) . ' movies for processing');
     }
 }
-
