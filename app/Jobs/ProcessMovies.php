@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Movie;
+use App\Models\AllMovie;
 use App\Services\MovieDatabaseService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -21,7 +21,7 @@ class ProcessMovies implements ShouldQueue
             $movieData = $movieService->getMovieDetails($imdbId);
 
             if ($movieData) {
-                Movie::updateOrCreate(
+                AllMovie::updateOrCreate(
                     ['external_id' => $movieData['external_id']],
                     $movieData
                 );
